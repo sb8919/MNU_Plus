@@ -551,69 +551,6 @@ def search():
     return render_template('special/festival/search/search.html', boothsearch_data=boothsearch_list, search_name=search_name)
 
 #======================================================================
-    '''
-    
-    # 부스 리스트 
-    sql = "SELECT * FROM Booth_List;"
-    booth_list = festivaldb.fetch_all(sql)
-    return render_template('', booth_data=booth_list)
-
-    # 플리마켓 리스트 
-    sql = "SELECT * FROM Market_List;"
-    market_list = festivaldb.fetch_all(sql)
-    return render_template('', market_data=marker_list)
-
-    # 푸드 셀러 리스트 
-    sql = "SELECT * FROM Food_List;"
-    food_list = festivaldb.fetch_all(sql)
-    return render_template('', food_data=food_list)
-    
-    # 푸드트럭 리스트 
-    sql = "SELECT * FROM FoodTruck_List;"
-    foodtruck_list = festivaldb.fetch_all(sql)
-    return render_template('', foodtruck_data=foodtruck_list)
-    
-    # 체험부스 운영 시간 리스트 (4/5일차)
-    sql = "SELECT * FROM DAY1_BoothTime_List;"
-    d1boothtime_list = festivaldb.fetch_all(sql)
-    return render_template('', d1boothtime_data=d1boothtime_list)
-    
-    # 체험부스 운영 시간 리스트 (4/6일차) 
-    sql = "SELECT * FROM DAY2_BoothTime_List;"
-    d2boothtime_list = festivaldb.fetch_all(sql)
-    return render_template('', d2boothtime_data=d2boothtime_list)
-    
-    # 주점부스 운영시간 리스트
-    sql = "SELECT * FROM BoothBarTime_List;"
-    bartime_list = festivaldb.fetch_all(sql)
-    return render_template('', bartime_data=bartime_list)
-    
-    # 전체일정표 
-    sql = "SELECT * FROM Schedule_List;"
-    schedule_list = festivaldb.fetch_all(sql)
-    return render_template('', schedule_data=schedule_list)
-    
-    # 무대 프로그램 (4/5일차) 
-    sql = "SELECT * FROM DAY1_Stage_List;"
-    d1stage_list = festivaldb.fetch_all(sql)
-    return render_template('', d1stage_data=d1stage_list)
-    
-    # 무대 프로그램 (4/6일차)  
-    sql = "SELECT * FROM DAY2_Stage_List;"
-    d2stage_list = festivaldb.fetch_all(sql)
-    return render_template('', d2stage_data=d2stage_list)
-    
-    # 부스(일반) 리스트 
-    sql = "SELECT * FROM Boothbooth_List;"
-    boothbooth_list = festivaldb.fetch_all(sql)
-    return render_template('', boothbooth_data=boothbooth_list)
-    
-    # 부스(주점) 리스트 
-    sql = "SELECT * FROM Boothbar_List;"
-    boothbar_list = festivaldb.fetch_all(sql)
-    return render_template('', boothbar_data=boothbar_list)
-    '''
-
 #=======================================================================
 
 

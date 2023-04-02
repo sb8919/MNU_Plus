@@ -113,7 +113,11 @@
             <div class="card">
               <h3>🎪 부스 List</h3>
               <h5>총 {{count_list[0]}}개의 부스를 확인하세요!</h5>
+              {% if '축제 당일 운영중인 부스의 수가 표시됩니다.' in open_count %}
+              <h5> <span style="color: rgb(255, 156, 173);"> 축제 당일 운영중인 부스의 수가 표시됩니다.</span> </h5>
+              {% else %}
               <h5>현재 <span style="color: rgb(255, 156, 173);">{{food_count}}</span>개 부스 운영중! </h5>
+              {% endif %}
               <p>자세히 보기 ></p>
               <div class="map" id="map1"></div>
             </div>

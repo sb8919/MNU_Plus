@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>청명제</title>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+    integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+    crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/special/festival/search/search.css')}}">
+    <script src="https://kit.fontawesome.com/2c286dbf8b.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $("#nav").load(
+          "{{ url_for('static', filename='navbar/festival_navbar/navbar.html')}}"
+        );
+      });
+    </script>
+
+  </head>
+  <body>
+    <nav id="nav">
+
+    </nav>
+    <form id="search-form" class="search-form" action="/festival/search">
+      <input type="text" class="form-control search-input" id="search-input" name="keyword" placeholder="{{search_name}}" required>
+      <button type="submit" class="btn btn-primary search-button"><i style="color:black;"class="fas fa-search"></i></button>
+    </form>
+    
+      <div class="row">
+        {% if boothsearch_data %}
+        {% for booth_no, booth_name, booth_main, booth_time, _, _, booth_img in boothsearch_data %}
+        <div class="col-6 cardWrap">
+          <div class="card">
+            <div class="card-body">
+              <img src="{{ url_for('static', filename=booth_img) }}" class="card-img-top photo-card" alt="{{ booth_name }}" style="object-fit: cover; width: 100%; aspect-ratio: 1/1;">
+              <div class="booth-no">
+                <span class="booth-no-text">{{ booth_no }}</span>
+              </div>
+              <div class="card-info">
+                <h5 class="card-title">{{ booth_name }}</h5>
+                {% if "," in booth_time %}
+                  {% set booth_time_list = booth_time.split(",") %}
+                  <h6 class="card-subtitle mb-2 text-muted" style="font-size:10px;">
+                    {{ booth_time_list[0] }}<br>{{ booth_time_list[1] }}
+                  </h6>
+                {% else %}
+                  <h6 class="card-subtitle mb-2 text-muted">
+                    {{ booth_time }}
+                  </h6>
+                {% endif %} 
+                <h2 class="card-text">{{ booth_main }}</h2>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+        {% else %}
+          <div class="col-12">
+            <div class="elsecard">
+              <h5 class="title">검색 결과가 없습니다</h5>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+  </body>
+
+</html>

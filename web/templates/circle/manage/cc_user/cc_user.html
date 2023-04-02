@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>동아리 수정</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+            integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+            crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+            integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+            crossorigin="anonymous"></script>
+        <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/circle/circle_sign.css')}}">
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $("#nav").load("{{ url_for('static', filename='navbar/admin_navbar.html')}}");
+            });
+            $(document).ready(function () {
+                if ("{{session['id']}}" != "circle_user") {
+                    alert("권한이 없습니다!");
+                    location.href = "/circle/manage/login";
+                }
+                else {
+                    $("#nav").load("{{ url_for('static', id = id, filename='navbar/admin_navbar.html')}}", function () {
+                        $(this).html($(this).html().replace('Login', 'Logout'));
+                        $("#nav_login").attr("href", "/circle/manage/logout");
+                        $("#manage_menu").prepend('<li><a class="dropdown-item" href="/circle/manage/circle_user">동아리 수정</a></li>');
+                    });
+                }
+            });
+        </script>
+
+    </head>
+
+    <body>
+        <!-- 네비게이션 바 -->
+        <nav id="nav"></nav>
+        <!-- intro -->
+
+        <div class="card text-black" style="border-radius: 25px;">
+            <div class="card-body p-md-5">
+                <div class="row justify-content-center">
+                    <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+
+                        <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Circle Update</p>
+                        {%for circle_name,circle_category,circle_short_intro,circle_logo_url,recruit_stday,recruit_endday,circle_detail_intro,apply_process,qualifications,preferential,master_name,master_number,id,password,_,_,_,circle_recruit_url in circle_data%}
+                        <form class="mx-1 mx-md-4" action="/circle_update_post" method="post" onsubmit="complete();"
+                            enctype="multipart/form-data">
+                            <h3>동아리 기본 정보</h3>
+                            <p><a>동아리 목록페이지</a>에 들어가는 내용입니다.</p>
+                            <div class="d-flex flex-row align-items-center mb-3">
+                                <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                                <div class="form-outline flex-fill mb-0">
+                                    <label class="form-label">동아리 이름</label>
+                                    <input type="text" name="circle_name" value="{{circle_name}}" class="form-control input-md" required />
+                                </div>
+                            </div>
+
+                            <div class="d-flex flex-row align-items-center mb-3">
+                                <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
+                                <div class="form-outline flex-fill mb-0">
+                                    <label class="form-label">동아리 카테고리</label>
+                                    <select id="selectbasic" name="circle_category" class="form-control input-md">
+                                        <option>문화/예술/공연</option>
+                                        <option>봉사/사회활동</option>
+                                        <option>학술/교양</option>
+                                        <option>창업/취업</option>
+                                        <option>어학</option>
+                                        <option>체육</option>
+                                        <option>친목</option>
+                                        <option>기타</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="d-flex flex-row align-items-center mb-3">
+                                <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
+                                <div class="form-outline flex-fill mb-0">
+                                    <label class="form-label">간단한 동아리 소개 </label>
+                                    <input type="text" value="{{circle_short_intro}}" name="circle_short_intro" class="form-control input-md"
+                                        required />
+                                </div>
+                            </div>
+
+                            <div class="d-flex flex-row align-items-center mb-3">
+                                <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
+                                <div class="form-outline flex-fill mb-0">
+                                    <label class="form-label">로고파일</label>
+                                    <input type="file" value="{{circle_logo_url}}" name="circle_logo_url" class="form-control input-md"/>
+                                    <p style="font-size:8px;">* logo 사이즈를 500 x
+                                        500 이상으로 해주세요</p>
+                                </div>
+                            </div>
+
+
+                            <h3>동아리 상세정보</h3>
+                            <p><a>동아리 상세페이지</a>에 들어가는 내용입니다.</p>
+                            <div class="d-flex flex-row align-items-center mb-3">
+                                <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
+                                <div class="form-outline flex-fill mb-0">
+                                    <div class="form-group">
+                                        <label class="form-label" for="form3Example4c">모집기간 (부터)</label>
+                                        <div class="form-label">
+                                            <input type="date" value="{{recruit_stday}}" name="recruit_stday" class="form-control input-md"
+                                                required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-outline flex-fill mb-0">
+                                    <div class="form-group">
+                                        <label class="form-label" for="form3Example4c">모집기간 (까지)</label>
+                                        <div class="form-label">
+                                            <input type="date" value="{{recruit_endday}}" name="recruit_endday" class="form-control input-md"
+                                                required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex flex-row align-items-center mb-3">
+                                <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
+                                <div class="form-outline flex-fill mb-0">
+                                    <label class="form-label">자세한 동아리 소개</label>
+                                    <input type="text" value="{{circle_detail_intro}}" name="circle_detail_intro" class="form-control input-md"
+                                        required />
+
+                                </div>
+                            </div>
+
+                            <div class="d-flex flex-row align-items-center mb-3">
+                                <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
+                                <div class="form-outline flex-fill mb-0">
+                                    <label class="form-label">지원방식</label>
+                                    <input type="text" value="{{apply_process}}" name="apply_process" class="form-control input-md" required />
+                                </div>
+                            </div>
+
+                            <div class="d-flex flex-row align-items-center mb-3">
+                                <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
+                                <div class="form-outline flex-fill mb-0">
+                                    <label class="form-label">지원자격</label>
+                                    <input type="text" value="{{qualifications}}" name="qualifications" class="form-control input-md" required />
+                                </div>
+                            </div>
+
+                            <div class="d-flex flex-row align-items-center mb-3">
+                                <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
+                                <div class="form-outline flex-fill mb-0">
+                                    <label class="form-label">지원URL</label>
+                                    <input type="text" value="{{circle_recruit_url}}" name="circle_recruit_url" class="form-control input-md" required />
+                                </div>
+                            </div>
+
+                            <div class="d-flex flex-row align-items-center mb-3">
+                                <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
+                                <div class="form-outline flex-fill mb-0">
+                                    <label class="form-label">우대사항</label>
+                                    <input type="text" value="{{preferential}}" name="preferential" class="form-control input-md" required />
+                                </div>
+                            </div>
+
+                            <div class="d-flex flex-row align-items-center mb-3">
+                                <i class="fas fa-key fa-lg me-3 fa-fw"></i>
+                                <div class="form-outline flex-fill mb-0">
+                                    <label class="form-label">동아리 회장 이름</label>
+                                    <input type="text" value="{{master_name}}" name="master_name" class="form-control input-md" required />
+                                </div>
+                            </div>
+
+                            <div class="d-flex flex-row align-items-center mb-3">
+                                <i class="fas fa-key fa-lg me-3 fa-fw"></i>
+                                <div class="form-outline flex-fill mb-0">
+                                    <label class="form-label">동아리 회장 번호 ( '-' 붙여 입력 )</label>
+                                    <input type="text" value="{{master_number}}" name="master_number" class="form-control input-md" required />
+                                </div>
+                            </div>
+
+                            <h3>동아리 수정완료</h3>
+                            <p><a>동아리 수정 완료를 위해 비밀번호를 입력해주세요.</p>
+                            <input type="hidden" id="id" name="id" value="{{id}}"/>
+                            <div class="d-flex flex-row align-items-center mb-3">
+                                <i class="fas fa-key fa-lg me-3 fa-fw"></i>
+                                <div class="form-outline flex-fill mb-0">
+                                    <label class="form-label">비밀번호</label>
+                                    <input type="password" id="password" name="password" onchange="pw_check()"
+                                        class="form-control input-md" required />
+                                </div>
+                            </div>
+
+                            <div class="form-check d-flex justify-content-center mb-3">
+                                <input class="form-check-input me-2" type="checkbox" id="team_agree" name="team_agree"
+                                    onchange="passUpdate()" />
+                                <label class="form-check-label">
+                                    정보 수집 제공에 동의합니다.
+                                </label>
+                            </div>
+
+                            <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                                <button type="submit" class="btn btn-primary btn-lg" id="circle_update_btn">수정하기</button>
+                            </div>
+
+                        </form>
+                        <script>
+                            document.getElementById('circle_update_btn').setAttribute('disabled', true);
+                            const true_passwd ='none';
+                            function complete() {
+                                alert('동아리 수정이 완료됐습니다!');
+                            }
+                            function passUpdate() {
+                                var team_agree = document.getElementById('team_agree').checked;
+                                if (team_agree == true) {
+                                    document.getElementById('circle_update_btn').removeAttribute('disabled');
+                                } else {
+                                    document.getElementById('circle_update_btn').setAttribute('disabled', true);
+                                }
+                            }
+                            function pw_check() {
+                                var input_pwd = document.getElementById('password').value;
+                                const true_pwd = '{{password}}';
+                                if (true_pwd != input_pwd) {
+                                    document.getElementById('circle_update_btn').setAttribute('disabled', true);
+                                    document.getElementById('password').className = 'form-control input-md is-invalid';
+                                } else {
+                                    document.getElementById('password').className = 'form-control input-md is-valid';
+                                }
+                            }
+                            
+                        </script>
+                        {%endfor%}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        </section>
+    </body>
+
+</html>

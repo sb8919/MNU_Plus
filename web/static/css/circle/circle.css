@@ -1,0 +1,9 @@
+
+body{
+    background: #edf1f5;
+}
+@media (min-width: 576px) {
+    .row-select {
+      width: 100%;
+    }
+  }

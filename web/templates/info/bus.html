@@ -1,0 +1,121 @@
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> 통학버스 정보 </title>
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+    integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+    crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/program/program_style.css')}}"> 
+  <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $("#nav").load("{{ url_for('static', filename='navbar/navbar.html')}}");
+    });
+  </script>
+
+  </head>
+  <body>
+    <nav id="nav"></nav>
+  
+      
+      <div class="table-responsive">
+          <div class="container justify-content-center">
+            <br><div class="ti">광주면 통학버스 (송정)</div> <br>
+              <table class="table table-striped table-bordered table-condensed" style="font-size: 15px">
+                  <thead>
+                  <tr>
+                      <th scope="col">출발 시간</th>
+                      <th scope="col">출발 장소</th>
+                      <th scope="col">운행노선</th>
+              
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                      <td>07:10</td>
+                      <td>염주체육관 건너편육교</td>
+                      <td>염주체육관건너편육교 ⇒ 서광주우체국건너편_CU편의점 ⇒ 구호남대_한마음신경정신과 ⇒ 세정아울렛버스승강장
+                          ⇒ 송정파출소건너편_할리매장옆승강장 ⇒ 송정역시외버스승강장 ⇒ 도림캠퍼스 </td>
+                  </tr>
+
+                  <tr>
+                      <td>07:10</td>
+                      <td>금호지구중흥Ⓐ</td>
+                      <td>금호지구중흥Ⓐ건너편승강장 ⇒ 송정파출소건너편_할리매장옆승강장 ⇒ 선운휴먼시아정류장 ⇒ 도림캠퍼스 </td>
+                  </tr>
+
+                  <tr>
+                      <td>07:00</td>
+                      <td>시립장애인복지관</td>
+                      <td>시립장애인복지관육교 ⇒ 문화신협 운암지점 ⇒ 신세계백화점육교 ⇒ 추선회관앞 ⇒ 구호남대_한마음신경정신과 ⇒ 세정아울렛버스승강장
+                          ⇒ 송정파출소건너편_할리매장옆승강장 ⇒ 송정역시외버스승강장 ⇒ 도림캠퍼스 </td>
+                  </tr>
+
+                  <tr>
+                    <td>07:00</td>
+                    <td>NC백화점 광주역점</td>
+                    <td>NC백화점 광주역점 ⇒ 서구청버스승강장 ⇒ 추선회관 ⇒ 구호남대_한마음신경정신과 ⇒ 세정아울렛버스승강장
+                        ⇒ 송정파출소건너편_할리매장옆승강장 ⇒ 송정역시외버스승강장 ⇒ 도림캠퍼스 </td>
+                  </tr>
+
+                <tr>
+                  <td>06:50</td>
+                  <td>일곡119 안전센터</td>
+                  <td>일곡119 안전센터 ⇒ 31사단정문사거리 ⇒ 오치사거리 책돌이도서관승강장 ⇒ 북구청보건소사거리_메가박스건너편경민회관 ⇒ 광주중앙교회거너너편_국제열쇠
+                      ⇒ 롯데백화점건너편_금호할인마트 ⇒ 독립로알뜰주유소 ⇒ 백운초정문 ⇒ 동성고앞육교 ⇒ 천주교성당승강장 ⇒ 도림캠퍼스 </td>
+                </tr>
+
+                <tr>
+                  <td>07:00</td>
+                  <td>연제동 롯데칠성승강장</td>
+                  <td>연제동 롯데칠성승강장(07:00)⇒용두주공승강장(07:05)⇒첨단응암공원승강장(07:10)⇒수완2차우미린Ⓐ승강장(07:12)⇒현진에버빌Ⓐ승강장(07:13)
+                    ⇒수완W여성병원(07:15)⇒어등산약국(07:16)⇒월곡동부영Ⓐ승강장(07:20)⇒광산중학교건너편승강장(07:22)⇒구송정파출소건너편_할리매장옆승강장(07:25)
+                    ⇒송정역시외버스승강장(07:30)⇒도림캠퍼스 </td>
+                </tr>
+
+                <tr>
+                  <td>07:10</td>
+                  <td>첨단응암공원 승강장</td>
+                  <td>첨단응암공원승강장(07:10)⇒수완2차우미린Ⓐ승강장(07:12)⇒현진에버빌Ⓐ승강장(07:13)⇒수완W여성병원(07:15)⇒어등산약국(07:16)
+                    ⇒월곡동부영Ⓐ승강장(07:20)⇒광산중학교건너편승강장(07:22)⇒구송정파출소건너편_할리매장옆승강장(07:25)
+                    ⇒송정역시외버스승강장(07:30)⇒도림캠퍼스  </td>
+                </tr>
+
+                <tr>
+                  <td>07:00</td>
+                  <td>남부대정문</td>
+                  <td>남부대정문(07:00)⇒신창동우체국(07:05)⇒우미Ⓐ건너편_비아신협(07:07)⇒운남주공1단지육교_KCC페인트(07:09)⇒운남주공5단지육교_목련마을승강장(07:11)
+                    ⇒운남동 삼성아파트건너편승강장(07:12)⇒월곡동부영Ⓐ승강장(07:15)⇒구송정파출소건너편_할리매장옆승강장(07:20)⇒송정역시외버스승강장(07:25)⇒도림캠퍼스  </td>
+                </tr>
+
+                <tr>
+                  <td>07:20</td>
+                  <td>월곡동 부영Ⓐ승강장</td>
+                  <td>월곡동부영Ⓐ승강장(07:20)⇒광산중학교건너편승강장(07:22)⇒구송정파출소건너편_할리매장옆승강장(07:25)⇒송정역시외버스승강장(07:30)⇒도림캠퍼스  </td>
+                </tr>
+
+                <tr>
+                  <td>07:30</td>
+                  <td>송정역 시외버스승강장</td>
+                  <td>송정역시외버스승강장(07:30)⇒에너지밸리캠퍼스(08:00)⇒다시 공영버스터미널(08:10)
+                    ⇒고막원 광목기사식당(08:12)⇒무안우체국(08:25)⇒도림캠퍼스  </td>
+                </tr>
+
+                <tr>
+                  <td>09:30</td>
+                  <td>첨단응암공원승강장</td>
+                  <td>첨단응암공원승강장(09:30)⇒수완2차우미린Ⓐ승강장(09:32)⇒현진에버빌Ⓐ승강장(09:33)⇒수완W여성병원(09:35)⇒어등산약국(09:36)⇒월곡동부영Ⓐ승강장(09:40)
+                    ⇒광산중학교건너편승강장(09:42)⇒구송정파출소건너편_할리매장옆승강장(09:45)⇒송정역시외버스승강장(09:50)⇒도림캠퍼스   </td>
+                </tr>
+
+                  </tbody>
+              </table>
+          </div>
+      </div>  
+  </body>
+</html>

@@ -1,0 +1,88 @@
+@font-face {
+    font-family: 'BMDOHYEON';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMDOHYEON.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+  }
+  body nav:not() {
+    font-family: 'BMDOHYEON';
+  }
+
+  h3{
+    color: rgb(89, 89, 89);
+    font-weight: bold;
+    text-align: center;
+  }
+
+  
+.body2{
+    min-height: 100%;
+    display: grid;
+    place-items: center;
+}
+
+.slider{
+    height: 250px;
+    margin: auto;
+    position: relative;
+    width: 90%;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+}
+
+.slide-track {
+    display: flex;
+    width: calc(250px *10);
+    animation: scroll 40s linear infinite;
+}
+
+
+@keyframes scroll {
+    0%{
+        transform: translateX(0);
+    }
+    100%{
+        transform:translateX(calc(-250px * 9));
+    }
+}
+.slideb{
+    height: 200px;
+    width: 250px;
+    display:flex;
+    align-items: center;
+    padding: 10px;
+    perspective: 100px;
+}
+
+img {
+    width: 200px;
+    height: 200px;
+    transition: transform 1s;
+}
+
+img:hover{
+    transform: translateZ(20px);
+}
+
+.slider::before,
+.slider::after{
+    background: linear-gradient(to right, rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 0) 100%);
+    content: '';
+    height: 100%;
+    position: absolute;
+    width: 15%;
+    z-index: 2;
+}
+
+.slider::before{
+    left: 0;
+    top: 0;
+}
+
+.slider::after {
+    right:0;
+    top:0;
+    transform: rotateZ(180deg);
+}

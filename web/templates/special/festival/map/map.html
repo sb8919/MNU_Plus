@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Festival Map</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp"
+      crossorigin="anonymous"
+    />
+    <style>
+      .tab-content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      body {
+        overflow-y: scroll;
+      }
+      @font-face {
+        font-family: 'TheJamsil5Bold';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil5Bold.woff2') format('woff2');
+        font-weight: normal;
+        font-style: normal;
+      }
+      * {
+        font-family: "TheJamsil5Bold";
+      }
+
+      .nav-link {
+        margin-right: 20px;
+        color: #FF6699;
+      }
+      .nav-link:hover {
+        color: #ff69b4;
+        background-color: #FFE4E1;
+      }
+      .customoverlay {
+        position: relative;
+        bottom: 85px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        border-bottom: 2px solid #ddd;
+        float: left;
+      }
+
+      .wrap {
+        position: absolute;
+        left: 0;
+        bottom: 40px;
+        width: 288px;
+        height: 132px;
+        margin-left: -144px;
+        text-align: left;
+        overflow: hidden;
+        font-size: 12px;
+        line-height: 1.5;
+      }
+      .wrap * {
+        padding: 0;
+        margin: 0;
+      }
+      .wrap .info {
+        width: 286px;
+        height: 120px;
+        border-radius: 5px;
+        border-bottom: 2px solid #ccc;
+        border-right: 1px solid #ccc;
+        overflow: hidden;
+        background: #fff;
+        white-space: normal;
+        text-overflow: ellipsis;
+      }
+      .wrap .info:nth-child(1) {
+        border: 0;
+        box-shadow: 0px 1px 2px #888;
+      }
+      .info .title {
+        text-align: center;
+        padding: 5px 0 0 10px;
+        height: 30px;
+        background: #eee;
+        border-bottom: 1px solid #ddd;
+        font-size: 18px;
+        font-weight: bold;
+      }
+      .info .close {
+        position: absolute;
+        top: 7px;
+        right: 10px;
+        color: #888;
+        width: 17px;
+        height: 17px;
+        background: url("https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png");
+      }
+      .info .close:hover {
+        cursor: pointer;
+      }
+      .info .body {position: relative;text-align: center;top: 10px; font-size:15px}
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $("#nav").load(
+          "{{ url_for('static', filename='navbar/festival_navbar/navbar.html')}}"
+        );
+      });
+    </script>
+  </head>
+  <body style="background-color: #FFF0F5	">
+    <nav id="nav"></nav>
+    <h1 style="text-align: center; font-size: 40px; color: #FF6699; margin-top: 20px;">
+      부스 정보
+    </h1>
+    <h5 style="text-align: center">
+      마커를 클릭하면 </br>
+      각 부스에 관한 정보를 볼 수 있습니다!
+    </h5>
+    <h6 style="text-align: center">[
+      <img src="{{ url_for('static', filename='map/food/1.png') }}" width="30" height="30">푸트트럭
+      <img src="{{ url_for('static', filename='map/drink/1.png') }}" width="30" height="30">주점
+      <img src="{{ url_for('static', filename='map/booth/1.png') }}" width="30" height="30">체험부스 ]
+    </h6>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N"
+      crossorigin="anonymous"
+    ></script>
+    <ul class="nav nav-tabs justify-content-center" id="myTab">
+      <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" aria-current="page" href="#tab1">지도</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link"; data-toggle="tab" href="#tab2">푸드트럭</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#tab3">주점</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#tab4">부스</a>
+      </li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane active" id="tab1">
+        <div id="map" style="width: 375px; height: 600px"></div>
+        <script
+          type="text/javascript"
+          src="http://dapi.kakao.com/v2/maps/sdk.js?appkey=62c8a188d626136790b13fc3775e7d32"
+        ></script>
+        <script>
+            var container = document.getElementById("map");
+            var options = {
+              //위도, 경도
+              center: new kakao.maps.LatLng(34.906808, 126.431992),
+              level: 1,
+            };
+
+            var map = new kakao.maps.Map(container, options);
+
+            // 마커 이미지를 담을 배열
+            var food_markerImages= [];
+            var drink_markerImages= [];
+            var booth_markerImages= [];
+
+            //food
+            var food_markerImages =  [
+            "{{ url_for('static', filename='map/food/1.png') }}",
+            "{{ url_for('static', filename='map/food/2.png') }}",
+            "{{ url_for('static', filename='map/food/3.png') }}",
+            "{{ url_for('static', filename='map/food/4.png') }}",
+            "{{ url_for('static', filename='map/food/5.png') }}",
+            "{{ url_for('static', filename='map/food/6.png') }}",
+            "{{ url_for('static', filename='map/food/7.png') }}",
+            "{{ url_for('static', filename='map/food/8.png') }}",
+            "{{ url_for('static', filename='map/food/9.png') }}",
+            "{{ url_for('static', filename='map/food/10.png') }}",
+            "{{ url_for('static', filename='map/food/11.png') }}",
+            "{{ url_for('static', filename='map/food/12.png') }}",
+            "{{ url_for('static', filename='map/food/13.png') }}",
+            "{{ url_for('static', filename='map/food/14.png') }}"
+            ];
+
+            //drink
+            var drink_markerImages =  [
+            "{{ url_for('static', filename='map/drink/1.png') }}",
+            "{{ url_for('static', filename='map/drink/2.png') }}",
+            "{{ url_for('static', filename='map/drink/3.png') }}",
+            "{{ url_for('static', filename='map/drink/4.png') }}",
+            "{{ url_for('static', filename='map/drink/5.png') }}",
+            "{{ url_for('static', filename='map/drink/6.png') }}",
+            "{{ url_for('static', filename='map/drink/7.png') }}",
+            "{{ url_for('static', filename='map/drink/8.png') }}",
+            "{{ url_for('static', filename='map/drink/9.png') }}",
+            "{{ url_for('static', filename='map/drink/10.png') }}"
+            ];
+
+            //booth
+            var booth_markerImages = [
+            "{{ url_for('static', filename='map/booth/1.png') }}",
+            "{{ url_for('static', filename='map/booth/2.png') }}",
+            "{{ url_for('static', filename='map/booth/3.png') }}",
+            "{{ url_for('static', filename='map/booth/4.png') }}",
+            "{{ url_for('static', filename='map/booth/5.png') }}",
+            "{{ url_for('static', filename='map/booth/6.png') }}",
+            "{{ url_for('static', filename='map/booth/7.png') }}",
+            "{{ url_for('static', filename='map/booth/8.png') }}",
+            "{{ url_for('static', filename='map/booth/9.png') }}",
+            "{{ url_for('static', filename='map/booth/10.png') }}",
+            "{{ url_for('static', filename='map/booth/11.png') }}",
+            "{{ url_for('static', filename='map/booth/12.png') }}",
+            "{{ url_for('static', filename='map/booth/13.png') }}",
+            "{{ url_for('static', filename='map/booth/14.png') }}",
+            "{{ url_for('static', filename='map/booth/15.png') }}",
+            "{{ url_for('static', filename='map/booth/16.png') }}",
+            "{{ url_for('static', filename='map/booth/17.png') }}",
+            "{{ url_for('static', filename='map/booth/18.png') }}",
+            "{{ url_for('static', filename='map/booth/19.png') }}",
+            "{{ url_for('static', filename='map/booth/20.png') }}",
+            "{{ url_for('static', filename='map/booth/21.png') }}",
+            "{{ url_for('static', filename='map/booth/22.png') }}",
+            "{{ url_for('static', filename='map/booth/23.png') }}",
+            "{{ url_for('static', filename='map/booth/24.png') }}",
+            "{{ url_for('static', filename='map/booth/25.png') }}",
+            "{{ url_for('static', filename='map/booth/26.png') }}"
+            ];
+
+
+            //컨텐츠를 담을 배열
+            var food_contents = [];
+            var food_contents_num = [1,2,3,4,5,6,7,8,9,10,11,12,13,14];
+            var food_contents_name = [];
+            var food_contents_menu = [];
+            var food_contents_price = [];
+            var drink_contents = [];
+            var drink_contents_num = [];
+            var drink_contents_name = [];
+            var drink_contents_menu = [];
+            var drink_contents_price = [];
+            var booth_contents = [];
+            var booth_contents_num = [];
+            var booth_contents_name = [];
+            var booth_contents_menu = [];
+            var booth_contents_price = [];
+
+            // 마커를 담을 배열
+            var food_markers=[];
+            var drink_markers = [];
+            var booth_markers = [];
+
+            //커스텀 오버레이 닫는 함수        
+            function food_closeOverlay(overlayID) {
+              var food_overlay = document.getElementById(overlayID);
+              food_overlay.style.display = "none";
+            }
+            function drink_closeOverlay(overlayID) {
+              var drink_overlay = document.getElementById(overlayID);
+              drink_overlay.style.display = "none";
+            }
+            function booth_closeOverlay(overlayID) {
+              var booth_overlay = document.getElementById(overlayID);
+              booth_overlay.style.display = "none";
+            }
+
+            //컨텐츠
+            //food
+            {%for foodtu_name, foodtu_menu, foodtu_price in foodtruck_data%}
+            food_contents_name.push('{{foodtu_name}}')
+            food_contents_menu.push('{{foodtu_menu}}')
+            food_contents_price.push('{{foodtu_price}}')          
+            {%endfor%}
+            for(var i=0;i<food_contents_name.length;i++){
+              var food_content=
+              '<div class="wrap" id="'+i+'">' +
+                  '    <div class="info">' +
+                  '        <div class="title">' +
+                    food_contents_num[i]+'. '+ food_contents_name[i] +
+                  '            <div class="close"  onclick="food_closeOverlay('+i+')" title="닫기"></div>' + 
+                  '            </div>' +
+                  '        <div class="body">' +
+                  '🍴'+food_contents_menu[i]+'<br>'+'💵 '+food_contents_price[i]
+                  '        </div>' +
+                  '        </div>' +
+                  '    </div>';
+              food_contents.push(food_content);
+              
+
+            }
+
+            //컨텐츠
+            //drink
+            {%for booth_no, booth_name, booth_main, booth_price in boothbar_data%}
+            drink_contents_num.push('{{booth_no}}')
+            drink_contents_name.push('{{booth_name}}')
+            drink_contents_menu.push('{{booth_main}}')
+            drink_contents_price.push('{{booth_price}}')
+            
+            {%endfor%}
+            for(var i=0;i<drink_contents_name.length;i++){
+              var drink_content=
+              '<div class="wrap" id="'+i+'">' +
+                  '    <div class="info">' +
+                  '        <div class="title">' +
+                    drink_contents_num[i]+'. '+drink_contents_name[i] +
+                  '            <div class="close" onclick="drink_closeOverlay('+i+')" title="닫기"></div>' + 
+                  '            </div>' +
+                  '        <div class="body">' +
+                  '🍺 '+drink_contents_menu[i]+'<br>'+'⌚ '+drink_contents_price[i]
+                  '        </div>' +
+                  '        </div>' +
+                  '    </div>';
+              drink_contents.push(drink_content);
+            }
+
+            //컨텐츠
+            //booth
+            {%for booth_no, booth_name, booth_main, booth_price in boothbooth_data%}
+            booth_contents_num.push('{{booth_no}}')
+            booth_contents_name.push('{{booth_name}}')
+            booth_contents_menu.push('{{booth_main}}')
+            booth_contents_price.push('{{booth_price}}')
+            
+            {%endfor%}
+            for(var i=0;i<booth_contents_name.length;i++){
+              var booth_content=
+              '<div class="wrap" id="'+i+'">' +
+                  '    <div class="info">' +
+                  '        <div class="title">' +
+                    booth_contents_num[i]+'. '+  booth_contents_name[i] +
+                  '            <div class="close" onclick="booth_closeOverlay('+i+')" title="닫기"></div>' + 
+                  '            </div>' +
+                  '        <div class="body">' +
+                  '🎪 '+booth_contents_menu[i]+'<br>'+'⌚ '+booth_contents_price[i] +
+                  '        </div>' +
+                  '        </div>' +
+                  '    </div>';
+                  booth_contents.push(booth_content);
+            }
+
+
+            //마커가 표시될 위치
+            //food
+            var food_positions = [
+              {
+                latlng: new kakao.maps.LatLng(34.907020, 126.431580),
+              },
+              {
+                latlng: new kakao.maps.LatLng(34.906960, 126.431600),
+              },
+              {
+                latlng: new kakao.maps.LatLng(34.906900, 126.431620),
+              },
+              {
+                latlng: new kakao.maps.LatLng(34.906840, 126.431640),
+              },
+              {
+                latlng: new kakao.maps.LatLng(34.906780, 126.431660),
+              },
+              {
+                latlng: new kakao.maps.LatLng(34.906720, 126.431680),
+              },
+              {
+                latlng: new kakao.maps.LatLng(34.906660, 126.431700),
+              },
+              {
+                latlng: new kakao.maps.LatLng(34.906600, 126.431720),
+              },
+              {
+                latlng: new kakao.maps.LatLng(34.906540, 126.431740),
+              },
+              {
+                latlng: new kakao.maps.LatLng(34.906480, 126.431760),
+              },
+              {
+                latlng: new kakao.maps.LatLng(34.906420, 126.431780),
+              },
+              {
+                latlng: new kakao.maps.LatLng(34.906360, 126.431800),
+              },
+              {
+                latlng: new kakao.maps.LatLng(34.906300, 126.431820),
+              },
+              {
+                latlng: new kakao.maps.LatLng(34.906240, 126.431840),
+              },
+            ];
+
+            //drink
+            var drink_positions = [
+              {
+                latlng: new kakao.maps.LatLng(34.907270, 126.432200),
+              },
+              {
+                latlng: new kakao.maps.LatLng(34.907380, 126.432270),
+              },
+              {
+                latlng: new kakao.maps.LatLng(34.907240, 126.432056),
+              },
+              {
+                latlng: new kakao.maps.LatLng(34.907370, 126.432140),
+              },
+              {
+                latlng: new kakao.maps.LatLng(34.907216, 126.431914),
+              },
+              {
+                latlng: new kakao.maps.LatLng(34.907350, 126.432010),
+              },
+              {
+                latlng: new kakao.maps.LatLng(34.907181, 126.431767),
+              },
+              {
+                latlng: new kakao.maps.LatLng(34.907333, 126.431880),
+              },
+              {
+                latlng: new kakao.maps.LatLng(34.907307, 126.431760),
+              },
+              {
+                latlng: new kakao.maps.LatLng(34.907278, 126.431640),
+              },
+            ];
+
+            //booth
+            var booth_positions = [
+              {
+                latlng: new kakao.maps.LatLng(34.906325, 126.432702),
+              },
+              {
+                latlng: new kakao.maps.LatLng(34.906350, 126.432630),
+              },
+              {
+                latlng: new kakao.maps.LatLng(34.906270, 126.432680),
+              },
+              {
+                latlng: new kakao.maps.LatLng(34.906295, 126.432613),
+              },
+              {
+                latlng: new kakao.maps.LatLng(34.906210, 126.432649),
+              },
+              {
+                latlng: new kakao.maps.LatLng(34.906257, 126.432583),
+              },
+              {
+                latlng: new kakao.maps.LatLng(34.906162, 126.432592),
+              },
+              {
+                latlng: new kakao.maps.LatLng(34.906222, 126.432542),
+              },
+              {
+                latlng: new kakao.maps.LatLng(34.906129, 126.432540),
+              },
+              {
+                latlng: new kakao.maps.LatLng(34.906185, 126.432479),
+              },
+              {
+                latlng: new kakao.maps.LatLng(34.906092, 126.432483),
+              },
+              {
+                latlng: new kakao.maps.LatLng(34.906150, 126.432414),
+              },
+              {
+                latlng: new kakao.maps.LatLng(34.906056, 126.432420),
+              },
+              {
+                latlng: new kakao.maps.LatLng(34.906120, 126.432337),
+              },
+              {
+                latlng: new kakao.maps.LatLng(34.906023, 126.432344),
+              },
+              {
+                latlng: new kakao.maps.LatLng(34.906110, 126.432261),
+              },
+              {
+                latlng: new kakao.maps.LatLng(34.906009, 126.432256),
+              },
+              {
+                latlng: new kakao.maps.LatLng(34.906135, 126.432184),
+              },
+              {
+                latlng: new kakao.maps.LatLng(34.906020, 126.432183),
+              },
+              {
+                latlng: new kakao.maps.LatLng(34.906153, 126.432116),
+              },
+              {
+                latlng: new kakao.maps.LatLng(34.906030, 126.432100),
+              },
+              {
+                latlng: new kakao.maps.LatLng(34.906180, 126.432042),
+              },
+              {
+                latlng: new kakao.maps.LatLng(34.906056, 126.432018),
+              },
+              {
+                latlng: new kakao.maps.LatLng(34.906206, 126.431987),
+              },
+              {
+                latlng: new kakao.maps.LatLng(34.906080, 126.431958),
+              },
+              {
+                latlng: new kakao.maps.LatLng(34.906136, 126.431911),
+              }
+            ];
+            // 배열에 정의된 위치들에 대해 마커와 인포윈도우를 생성하여 지도 위에 추가
+            //커스텀 오버레이 닫는 함수
+
+              //food
+              for (var i = 0; i < food_positions.length; i++) {
+                // 마커 생성
+                var marker = new kakao.maps.Marker({
+                  position: food_positions[i].latlng,
+                  image: new kakao.maps.MarkerImage(food_markerImages[i], new kakao.maps.Size(40, 35))
+                });
+
+                // 마커에 클릭 이벤트 등록
+                kakao.maps.event.addListener(marker,"click",(function (marker, content) {
+                  return function () {
+                    // 커스텀 오버레이 생성
+                      food_overlay = new kakao.maps.CustomOverlay({
+                      content: content,
+                      map: map,
+                      position: marker.getPosition()
+                    });
+
+                    // 커스텀 오버레이 표시
+                    food_overlay.setMap(map, marker);
+                  };
+                })(marker, food_contents[i]));
+
+                // 마커를 배열에 추가
+                food_markers.push(marker);
+              }
+
+
+            //drink
+            for (var i = 0; i < drink_positions.length; i++) {
+                // 마커 생성
+                var marker = new kakao.maps.Marker({
+                  position: drink_positions[i].latlng,
+                  image: new kakao.maps.MarkerImage(drink_markerImages[i], new kakao.maps.Size(40, 35))
+                });
+            
+                // 마커에 클릭 이벤트 등록
+                kakao.maps.event.addListener(marker,"click",(function (marker, content) {
+                    return function () {
+                      // 커스텀 오버레이 생성
+                      drink_overlay = new kakao.maps.CustomOverlay({
+                          content: content,
+                          map: map,
+                          position: marker.getPosition()
+                      });
+  
+                      // 커스텀 오버레이 표시
+                      drink_overlay.setMap(map, marker);};
+                  })
+                  (marker, drink_contents[i])
+                );
+                // 마커를 배열에 추가
+                drink_markers.push(marker);
+              }
+
+            //booth
+            for (var i = 0; i < booth_positions.length; i++) {
+                // 마커 생성
+                var marker = new kakao.maps.Marker({
+                  position: booth_positions[i].latlng,
+                  image: new kakao.maps.MarkerImage(booth_markerImages[i], new kakao.maps.Size(40, 35))
+                });
+            
+                // 마커에 클릭 이벤트 등록
+                kakao.maps.event.addListener(marker,"click",(function (marker, content, index) {
+                    return function () {
+                      // 커스텀 오버레이 생성
+                          booth_overlay = new kakao.maps.CustomOverlay({
+                          content: content,
+                          map: map,
+                          position: marker.getPosition()
+                      });
+  
+                      // 커스텀 오버레이 표시
+                      booth_overlay.setMap(map, marker);              
+                      
+                  };
+                  })
+                  (marker, booth_contents[i])
+                );
+                
+                // 마커를 배열에 추가
+                booth_markers.push(marker);
+              }
+
+
+            // 마커를 지도 위에 추가
+            for (var i = 0; i < food_markers.length; i++) {
+              food_markers[i].setMap(map);
+            }
+            for (var i = 0; i < drink_markers.length; i++) {
+              drink_markers[i].setMap(map);
+            }
+            for (var i = 0; i < booth_markers.length; i++) {
+              booth_markers[i].setMap(map);
+            }
+        </script>
+      </div>
+      <div class="tab-pane" id="tab2">
+            {%for foodtu_name, foodtu_menu, foodtu_price in foodtruck_data%}
+            <div class="list-group m-2 justify-content-center">
+              <a href="#" class="list-group-item list-group-item-action" style="width:96vw" onclick="return false;">
+                <div class="d-flex w-100 justify-content-between">
+                  <h5 class="mb-1">{{foodtu_name}}</h5>
+                  <small>미정</small>
+                </div>
+                <p class="mb-1">{{foodtu_menu}}</p>
+                <p>{{foodtu_price}}</p>
+              </a>
+            </div>
+            {%endfor%}
+     
+      </div>
+      <div class="tab-pane" id="tab3">
+            {%for booth_no, booth_name, booth_main, booth_price in boothbar_data%}
+            <div class="list-group m-2">
+              <a href="#" class="list-group-item list-group-item-action" onclick="return false;">
+                <div class="d-flex w-100 justify-content-between">
+                  <h5 class="mb-1">{{booth_name}}</h5>
+                  <small>{{booth_no}}</small>
+                </div>
+                <p class="mb-1">{{booth_main}}</p>
+                <p>{{booth_price}}</p>
+              </a>
+            </div>
+            {%endfor%}
+      </div>
+      <div class="tab-pane" id="tab4">
+            {%for booth_no, booth_name, booth_main, booth_price in boothbooth_data%}
+            <div class="list-group m-2">
+              <a href="#" class="list-group-item list-group-item-action" onclick="return false;">
+                <div class="d-flex w-100 justify-content-between">
+                  <h5 class="mb-1">{{booth_name}}</h5>
+                  <small>{{booth_no}}</small>
+                </div>
+                <p class="mb-1">{{booth_main}}</p>
+                <p>{{booth_price}}</p>
+              </a>
+            </div>
+            {%endfor%}
+      </div>
+    </div>
+    <script>
+      var triggerTabList = [].slice.call(document.querySelectorAll("#myTab a"));
+      triggerTabList.forEach(function (triggerEl) {
+        var tabTrigger = new bootstrap.Tab(triggerEl);
+
+        triggerEl.addEventListener("click", function (event) {
+          event.preventDefault();
+          tabTrigger.show();
+        });
+      });
+
+      $(function() {
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+          var target = $(e.target).attr("href"); // 활성화된 탭의 href 값을 가져옴
+      
+          // 이전 탭의 캐시를 삭제
+          $(target).find(":input").each(function() {
+            $(this).val('').removeAttr('checked').removeAttr('selected');
+          });
+      
+          // 이전 탭을 새로고침
+          $(target).html($(target).html());
+        });
+      });
+      
+    </script>
+  </body>
+</html>

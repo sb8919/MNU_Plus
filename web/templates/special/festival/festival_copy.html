@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>청명제</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='javascript/special/festival.js') }}"> </script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+      integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+      integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous">
+    </script>
+    <script src="https://kit.fontawesome.com/2c286dbf8b.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $("#nav").load("{{ url_for('static', filename='navbar/festival_navbar/navbar.html')}}");
+      });
+    </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/special/festival/festival.css')}}">
+  </head>
+
+  <body>
+    <nav id="nav">
+
+    </nav>
+    <ul class="pointWrap">
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
+    <section id="intro">
+      <h1>목포대학교 청명제</h1>
+      <h2>4월 5일 ~ 4월 6일</h2>
+      <div class="cherry-blossoms-container">
+      </div>
+      <div class="scroll">
+        <p>아래로 스크롤 하세요!</p>
+      </div>
+    </section>
+    <section id="schedule">
+      <div class="container">
+        <div class="innerWrap">
+          <div class="schedule_section_title">
+            <h1>Festival Schedule</h1>
+            <div class="now">
+              <p>Now</p>
+              <h4>4월 5일</h4>
+            </div>
+          </div>
+          <div class="card">
+            <div class="text-container">
+              <div class="booth">
+                <div class="title">
+                  <h1>무대</h1>
+                  <div class="time">
+                    <p>TIME</p>
+                    <h5><a>15:00</a> ~ <a>21:00</a></h5>
+                  </div>
+                </div>
+                <div class="booth_list">
+                  {% if stage_list|length == 1 %}
+                  <h4>{{stage_list[0][0]|safe}} {{stage_list[0][1]|safe}}~{{stage_list[0][2]|safe}}</h4>
+                {% elif stage_list|length == 2 %}
+                  <h4>{{stage_list[0][0]|safe}} {{stage_list[0][1]|safe}}~{{stage_list[0][2]|safe}}</h4>
+                  <h4>{{stage_list[1][0]|safe}} {{stage_list[1][1]|safe}}~{{stage_list[1][2]|safe}}</h4>
+                {% else %}
+                  <h4>일정이 종료되었습니다!</h4>
+                {% endif %}
+                </div>
+              </div>
+              <div class="performance">
+                <div class="title">
+                  <h1>부스</h1>
+                  <div class="time">
+                    <p>TIME</p>
+                    <h5><a>11:00</a> ~ <a>24:00</a></h5>
+                  </div>
+                </div>
+                <div class="perpormance_list">
+                  <h4>부스 {{booth_hour|safe}}</h4>
+                  <h4>주점 {{pub_hour|safe}}</h4>
+                </div>
+              </div>
+              <p style="font-size:12px; color:rgb(65, 65, 65); position: absolute; bottom: 0;">이 기능은 편의를 위해 제공되는
+                기능입니다!<br>자세한 일정을 확인하시려면 아래 버튼을 눌러주세요.</p>
+            </div>
+          </div>
+          <a href="/festival/timetable"><button>자세한 일정 확인하기</button></a>
+        </div>
+    </section>
+    <section id="booth">
+      <div class="container">
+        <div class="innerWrap">
+          <div class="booth_section_title">
+            <h1>Festival Booth</h1>
+          </div>
+        </div>
+        <form id="search-form" class="search-form" action="/festival/search">
+          <input type="text" class="form-control search-input" id="search-input" name="keyword" placeholder="부스 또는 음식 검색하기" required>
+          <button type="submit" class="btn btn-primary search-button"><i style="color:black;"class="fas fa-search"></i></button>
+      </form>
+        <div class="cardWrap">
+          <a href="/festival/map#tab2" >
+            <div class="card">
+              <h3>🎪 부스 List</h3>
+              <h5>총 {{count_list[0]}}개의 부스를 확인하세요!</h5>
+              <h5>현재 <span style="color: rgb(255, 156, 173);">{{food_count}}</span>개 부스 운영중! </h5>
+              <p>자세히 보기 ></p>
+              <div class="map" id="map1"></div>
+            </div>
+          </a>
+          <a href="/festival/map" >
+            <div class="card">
+              <h3>🛍 플리마켓 List</h3>
+              <h5>총 {{count_list[1]}}개의 플리마켓을 확인하세요!</h5>
+              <p>자세히 보기 ></p>
+              <div class="map" id="map2"></div>
+            </div>
+          </a>
+          <a href="/festival/map" >
+            <div class="card">
+              <h3>🍔 푸드트럭 List</h3>
+              <h5>총 {{count_list[2]}}개의 푸드트럭을 확인하세요!</h5>
+              <p>자세히 보기 ></p>
+              <div class="map" id="map3"></div>
+            </div>
+        </a>
+        </div>
+      </div>
+    </section>
+
+    <section id="event">
+      <div class="innerWrap">
+        <h1>Event</h1>
+        <!-- <a href="https://www.instagram.com/mnu40_bareum/"><img src="{{ url_for('static', filename='special/festival/event.PNG') }}"/></a>
+        <p style="font-size:8px;">사진 클릭시 총학생회 이벤트 안내 인스타그램 페이지로 넘어갑니다.</p> -->
+        <div class="card mb-4">
+          <a href="https://www.instagram.com/mnu40_bareum/">
+            <img src="{{ url_for('static', filename='special/festival/event.PNG') }}" class="card-img-top" alt="이벤트 이미지">
+          </a>
+          <div class="card-body">
+            <h5 class="card-title">바름 총학이벤트</h5>
+            <p class="card-text">오후 두 시 피크닉을 즐기고 계시는 학우분께 바름총학생회가 치킨들고 찾아갑니다!</p>
+            <a href="https://www.instagram.com/mnu40_bareum/" class="btn btn-outline-primary">자세히 보기</a>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    </section>
+
+
+    <section id="warning">
+      <div class="innerWrap">
+        <h1>주의사항</h1>
+        <h2 style="font-size:15px;">즐거운 축제를 위해 꼭 지켜주세요!</h2>
+        <!-- <a href="https://www.instagram.com/mnu40_bareum/"><img src="{{ url_for('static', filename='special/festival/event.PNG') }}"/></a>
+        <p style="font-size:8px;">사진 클릭시 총학생회 이벤트 안내 인스타그램 페이지로 넘어갑니다.</p> -->
+        <div class="cardWrap">
+          <div class="card">
+            <h3>테이블 사용 후 뒷정리 !</h3>
+            <h5>주점 내 테이블 이용자 분들께서는 <a>사용 후 뒷정리</a>를 해주시길 바랍니다.</h5>
+          </div>
+          <div class="card">
+            <h3><a>분실물</a>에 대한 안내사항</h3>
+            <h5><a style="color:#3247ff; background-color: #FFFFFF;">분실물 습득시</a><br>- 바름총학생회 본부로 전달해주세요.<br><a style="color:#3247ff; background-color: #FFFFFF;">분실물 발생시</a><br>- 바름총학생회 본부로 와주세요.</h5>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    </section>
+
+    <section id="project_intro">
+      <div class="innerWrap">
+        <h1>This Project</h1>
+        <h5>이 청명제 페이지는 <strong style="color:rgb(11, 69, 149)">융합소프트웨어학과</strong>에서 <br>제작한 2023년 청명제 웹페이지입니다.</h5>
+        <div class="imageWrap">
+        </div>
+        <div class="container">
+          <div class="card-container">
+              <div class="info_card">
+                  <div class="container">
+                      <img src="{{ url_for('static', filename='imoji/sangbum.png') }}" class="profile">
+                      <div class="text">
+                          <h1>박상범</h1>
+                          <h2>융합소프트웨어학과 20</h2>
+                          <h3>Project Manager<br>• Main Page</h3>
+                      </div>
+                  </div>
+              </div>
+              <div class="info_card">
+                  <div class="container">
+                      <img src="{{ url_for('static', filename='imoji/minji.png') }}" class="profile">
+                      <div class="text">
+                          <h1>강민지</h1>
+                          <h2>융합소프트웨어학과 21</h2>
+                          <h3>FE & BE<br>• Booth Page</h3>
+                      </div>
+                  </div>
+              </div>
+              <div class="info_card">
+                  <div class="container">
+                      <img src="{{ url_for('static', filename='imoji/seorin.png') }}" class="profile">
+                      <div class="text">
+                          <h1>박서린</h1>
+                          <h2>융합소프트웨어학과 21</h2>
+                          <h3>FE & BE<br>• Time Schedule Page</h3>
+                      </div>
+                  </div>
+              </div>
+              <div class="info_card">
+                  <div class="container">
+                      <img src="{{ url_for('static', filename='imoji/suna.png') }}" class="profile">
+                      <div class="text">
+                          <h1>양선아</h1>
+                          <h2>융합소프트웨어학과 21</h2>
+                          <h3>DB Administrator & BE<br>• DB Manage</h3>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      </div>
+    </section>
+    <button id="floatingBtn"><i class="fa fa-arrow-up"></i></button>
+
+  </body>
+
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>mnu+_carpool</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <!-- Bootstrap Icons-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic" rel="stylesheet" type="text/css" />
+    <!-- SimpleLightbox plugin CSS-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.css" rel="stylesheet" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/carpool/styles.css')}}"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-rJhBsn5BU+8o92z/BvMnkF9DyNpjBn8eWupKjv1/igGZPLoArL5KfeW5n5x6RyXc+b5/H6lKU6gErg6LZP3qJw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#nav").load("{{ url_for('static', filename='navbar/navbar.html')}}");
+        });
+    </script>
+
+</head>
+<body>
+  <!-- 네비게이션 바 -->
+  <nav id="nav"></nav>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Masthead-->
+  <section class="page-section" id="contact">
+    <div class="container">
+      <div class="text-center">
+        <h2 class="section-heading text-uppercase" style="font-size:80px">Choice</h2>
+        <h3 style="color:#424242; font-size:25px" >원하는 차량을 선택하세요<br></h3>
+        <h3 style="color:#424242; font-size:18px">[
+          <i class="bi bi-file-person" style="font-size: 1.5rem; color: #FF69B4;"></i>성별,
+          <i class="bi bi-geo-alt-fill" style="font-size: 1.5rem; color: #FF69B4;"></i>출발지->도착지,
+          <i class="bi bi-stopwatch-fill" style="font-size: 1.5rem; color: #FF69B4;"></i>출발시간,
+          <i class="bi bi-chat-dots-fill" style="font-size: 1.5rem; color: #FF69B4;"></i>메세지 ]</h3>
+        <br>
+     </div>
+    </div>
+    
+    <div class="row m-3">
+      {%for car_num, car_name, link, destination, departure, car_time, message, password in car_data%}
+      <div class="col-lg-3 col-md-6 col-sm-12 mb-3">
+        <form action="/car_passwd" method="post" id="passwd_submit"></form>
+        <div class="card h-100" style="background-color:#FFF0F5; border-color:#FFF0F5">
+          <div class="card-body">
+            <h6><input id="car_num" name="car_num" type="hidden" value="{{car_num}}"/></h5>
+            <div class="row">
+              <div class="col-auto">
+                <i class="bi bi-file-person" style="font-size: 2rem; color: #FF69B4;"></i>
+              </div>
+              <div class="col">
+              <h5 class="card-title">{{car_name}}</h5>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-auto">
+                <i class="bi bi-geo-alt-fill" style="font-size: 2rem; color: #FF69B4;"></i>
+              </div>
+              <div class="col">
+              <h5 class="card-text">{{departure}}->{{destination}}</h5>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-auto">
+                <i class="bi bi-stopwatch-fill" style="font-size: 2rem; color: #FF69B4;"></i>
+              </div>
+              <div class="col">
+              <h5 class="card-text">{{car_time}}</h5>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-auto">
+                <i class="bi bi-chat-dots-fill" style="font-size: 2rem; color: #FF69B4;"></i>
+              </div>
+              <div class="col">
+              <h5 class="card-text">{{message}}</h5>
+              </div>
+            </div>
+          </div>
+          <div class="mx-auto m-2">
+            <button class="btn btn-info" style="font-size:18px;" onclick="location.href='{{link}}'">탑승하기</a>
+            <button class="ms-1 btn btn-dark" style="font-size:18px;" onclick="del({{car_num}})">삭제하기</a>
+          </div>
+        </div>
+      </div>
+      <script type="text/javascript">
+        function check(value){
+          if(confirm("정말 이 차량에 탑승 하시겠습니까? \n바로 운전자의 카카오톡 링크로 연결됩니다") == true){
+            location.href="{{value}}";}
+          else{
+            return false;}
+        }
+        function del(car_num){
+          location.href='/car_passwd?car_num='+car_num;
+      
+        }
+      </script>
+      {%endfor%}
+    </div>
+    
+  </section>
+</body>
+</html>

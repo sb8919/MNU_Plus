@@ -1,0 +1,76 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap");
+@font-face {
+  font-family: "TheJamsil5Bold";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil5Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+}
+nav {
+  font-family: "TheJamsil5Bold";
+}
+
+body {
+  font-family: "TheJamsil5Bold";
+  min-height: 100vh;
+  background-image: linear-gradient(to top, #ffffff, #ff85a2);
+  margin: 0;
+}
+
+.title h1 {
+  font-family: "TheJamsil5Bold";
+  text-align: center;
+  margin-top: 30px;
+}
+
+.container {
+  font-family: "TheJamsil5Bold";
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: left;
+  padding: 0;
+}
+
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  width: 100%;
+  max-width: 1200px;
+  padding: 20px;
+}
+
+.info_card {
+  background-color: rgba(255, 255, 255, 0.6);
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+.info_card:hover {
+  background-color: rgb(255, 255, 255);
+}
+.info_card h1 {
+  font-size: 23px;
+}
+.info_card h2 {
+  font-size: 15px;
+}
+.info_card h3 {
+  font-size: 12px;
+  padding: 0;
+  margin: 0;
+}
+
+.profile {
+  float: left;
+  width: 80px;
+  height: 80px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  margin-right: 40px;
+}
+
+.text {
+  overflow: hidden;
+}/*# sourceMappingURL=dev_info.css.map */

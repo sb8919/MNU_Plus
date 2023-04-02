@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MNU Find</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+      integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+      crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+      integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+      crossorigin="anonymous"></script>
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/find/find.css')}}">
+    <script src="{{ url_for('static', filename='javascript/find/find.js') }}"> </script>
+
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $("#nav").load("{{ url_for('static', filename='navbar/navbar.html')}}");
+    });
+      
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  </head>
+
+  <body>
+    <!-- 네비게이션 바 -->
+    <nav id="nav"></nav>
+    
+    <section class="p-2 mx-auto" id="screen">
+      <div class="grid" style="--bs-columns: 2;">
+        <table class="table" style="border-collapse: collapse;">
+          <tr style="border-collapse: collapse;">
+            <td style="border-collapse: collapse;">
+              <div>
+                <h1 style="font-weight:bold; grid-row: 1">모임 찾기</h1>
+                <p style="font-weight:bold; grid-row: 1">모임게시판을 통해 같은 취미를 가진 사람을 찾아보세요!</p>
+              </div>
+            </td>
+          </tr>
+        </table>
+      <table class="table table-hover" id="board_list">
+        <thead>
+          <tr>
+            <th>번호</th>
+            <th>카테고리</th>
+            <th>제목</th>
+            <th>자세히보기</th>
+          </tr>
+          
+        </thead>
+        <tbody>
+          {%for No,Category,Title,Contents,Place,Date,signdate,_,sign_url in find_data%}
+          <tr>
+            <form action="/find/passwd" method="post" id="passwd_submit"></form>
+            <td><input id="No" name="No" type="hidden" value="{{No}}"/>{{No}}</td>
+            <td>{{Category}}</td>
+            <td>{{Title}}</td>
+            <td>
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#a{{No}}">
+                더보기
+              </button>
+              <!-- Modal -->
+                <div class="modal fade" id="a{{No}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">{{Title}}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <a style="display:block; width:100%;">{{Contents}}</a>
+                        <br>
+                        <a class="float-end" style="font-size:9px; text-decoration: none; color:rgb(122, 122, 122); margin:0px;">장소: <b>{{Place}}</b> 시간: <b>{{Date}}</b> <br>생성일: <b>{{signdate}}</b></a>
+                        
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" onclick="location.href='{{sign_url}}'">참여</button>
+                        <button type="button" onclick="btn_del({{No}})" class="btn btn-danger">삭제</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <script type="text/javascript">
+                  function btn_del(No) {
+                    location.href = '/find/passwd?No='+No;
+                   }    
+                  </script>
+              </form>
+            </td>
+          </tr>
+          {%endfor%}
+        </tbody>
+        
+        <div><button type="button" class="btn btn-outline-primary float-end g-col-2" style="grid-row: 1" onclick="location.href='/find_sign' ">글쓰기</button></div>
+      </table>
+      
+      
+      
+      <br><br>
+      <!-- <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+          <li class="page-item"><a class="page-link" href="http://127.0.0.1:5500/index.html#">Previous</a></li>
+          <li class="page-item"><a class="page-link" href="http://127.0.0.1:5500/index.html#">1</a></li>
+          <li class="page-item"><a class="page-link" href="http://127.0.0.1:5500/index.html#">2</a></li>
+          <li class="page-item"><a class="page-link" href="http://127.0.0.1:5500/index.html#">3</a></li>
+          <li class="page-item"><a class="page-link" href="http://127.0.0.1:5500/index.html#">4</a></li>
+          <li class="page-item"><a class="page-link" href="http://127.0.0.1:5500/index.html#">5</a></li>
+          <li class="page-item"><a class="page-link" href="http://127.0.0.1:5500/index.html#">Next</a></li>
+        </ul>
+      </nav> -->
+      </div>
+    </section>
+
+
+  </body>
+
+</html>

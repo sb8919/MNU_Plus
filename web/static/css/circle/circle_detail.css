@@ -1,0 +1,64 @@
+html {
+    overflow: hidden;
+}
+@font-face {
+    font-family: 'BMDOHYEON';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMDOHYEON.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+* {
+    font-family: 'BMDOHYEON';
+}
+html, body {
+    display: block;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    
+}
+
+.section {
+    width: 100%;
+    position: relative;
+}
+
+#intro_circle {
+    background-color: aliceblue;
+}
+
+
+#intro_circle_detail_text h1,h2{
+    color:white;
+}
+
+#main_intro{
+    height: 100vh; /* Fallback for browsers that do not support Custom Properties */
+    height: calc(var(--vh, 1vh) * 100);
+}
+
+#recruit_circle {
+    background-color: white;
+}
+
+img {
+    width : 100%;
+    height : 100%;
+    object-fit : cover;
+    min-height: -webkit-fill-available;
+}
+#dark_overlay {
+    position: absolute;
+    width:100%;
+    background-color: rgba(0,0,0,0.3);
+    top:0;
+    left:0;
+    
+  }
+
+#recruit_circle_deatail > table > tbody > tr > th{
+    padding:1rem;
+}
+#recruit_circle_deatail > table > tbody > tr > td{
+    padding:1rem;
+}

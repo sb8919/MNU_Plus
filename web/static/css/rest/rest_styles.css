@@ -1,0 +1,115 @@
+@font-face {
+  font-family: 'BMDOHYEON';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMDOHYEON.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+* nav:not(){
+  font-family: 'BMDOHYEON';
+  list-style: none;
+  text-decoration: none;
+  border-collapse: collapse;
+  margin: 0px;
+  padding: 0px;
+  color: #000;
+}
+
+.main_saying {
+  font-family: "Jua", sans-serif;
+  text-align: center;
+  font-size: 70px;
+  margin: 50px 0px 10px;
+}
+
+.sub_saying {
+  font-family: "Jua", sans-serif;
+  text-align: center;
+  font-size: 22px;
+  margin: 10px 0px 30px;
+}
+
+.btn {
+  margin-bottom: 2%;
+}
+
+.btns {
+  position: relative;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.card_txt {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 15px;
+}
+
+.card_txt_detail {
+  font-family: 'Noto Sans KR', sans-serif;
+  color: grey;
+  font-size: 13px;
+}
+
+p {
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .main_saying {
+    font-size: 60px;
+  }
+
+  .sub_saying {
+    font-size: 20px;
+  }
+
+}
+
+@media (max-width: 576px) {
+  .main_saying {
+    font-size: 52px;
+  }
+
+  .sub_saying {
+    font-size: 18px;
+  }
+
+  .btns {
+    margin: 0 30px 0;
+  }
+
+}
+
+@media (max-width: 280px) {
+  .main_saying {
+    font-size: 33px;
+  }
+
+  .sub_saying {
+    font-size: 15px;
+  }
+
+  .btns {
+    font-size: 10px;
+    margin: 0 20px 0;
+  }
+
+}
+
+
+.card {
+  position: relative;
+  min-width: 100%;
+  height: auto;
+  overflow: hidden;
+  border-radius: 10px;
+  margin: 0 auto;
+  padding: 0 auto;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+  transition: .5s;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>동아리 관리자</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#nav").load("{{ url_for('static', filename='navbar/admin_navbar.html')}}");
+        });
+    </script>
+    <script>
+        $(document).ready(function(){
+            if ("{{session['id']}}" != "circle_admin"){
+                alert("권한이 없습니다!");
+                location.href = "/circle/manage/login";
+            }
+            else{
+                $("#nav").load("{{ url_for('static', id = id, filename='navbar/admin_navbar.html')}}", function(){
+                    $(this).html($(this).html().replace('Login','Logout'));
+                    $("#nav_login").attr("href","/circle/manage/logout");
+                    $("#manage_menu").prepend('<li><a class="dropdown-item" href="/circle/manage/circle_admin">동아리 승인</a></li>');
+                });
+            }
+        });
+    </script>
+</head>
+<body>
+    <nav id="nav"></nav>
+            <div class="col-md-9 px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2">
+                    <h1 class="h2">동아리 신청목록📄</h1>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped table-sm" style="width:1000px; height:50vh;">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">동아리</th>
+                            <th scope="col">카테고리</th>
+                            <th scope="col">회장이름</th>
+                            <th scope="col">회장번호</th>
+                            <th scope="col">간단한소개</th>
+                            <th scope="col">로고 이미지</th>
+                            <th scope="col">신청일자</th>
+                            <th scope="col">승인여부</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {%for circle_name,circle_category,master_name,master_number,circle_short_intro,circle_logo_url,sign_date in circle_sign_data%}
+                        <tr>
+                            <form method="post" class="d-flex" >
+                                <td>{{loop.index}}</td>
+                                <td><input type="hidden" name="circle_name" value="{{circle_name}}" readonly/>{{circle_name}}</td>
+                                <td><input type="hidden" name="circle_category" value="{{circle_category}}" readonly/>{{circle_category}}</td>
+                                <td><input type="hidden" name="master_name" value="{{master_name}}" readonly/>{{master_name}}</td>
+                                <td><input type="hidden" name="master_number" value="{{master_number}}" readonly/>{{master_number}}</td>
+                                <td><input type="hidden" name="circle_short_intro" value="{{circle_short_intro}}" readonly/>{{circle_short_intro}}</td>
+                                <td><input type="hidden" name="circle_logo_url" value="{{circle_logo_url}}" readonly/><a href="/static{{circle_logo_url}}"  download="">{{circle_logo_url}}</a></td>
+                                <td><input type="hidden" name="sign_date" value="{{sign_date}}" readonly/>{{sign_date}}</td>
+                                <td>
+                                    <button class="btn btn-outline-dark flex-shrink-0" type="submit" formaction="/circle/manage/approve" onclick="return confirm('동아리를 승인하시겠습니까?');">
+                                        O
+                                    </button>
+                                    <button class="btn btn-outline-dark flex-shrink-0" type="submit" formaction="/circle/manage/declined" onclick="return confirm('동아리를 삭제하시겠습니까?');">
+                                        X
+                                    </button>
+                                </td>
+                            </form>
+                        </tr>
+                        {%endfor%}
+                        </tbody>
+                    </table>
+                    <script>
+                        function approve_confirm(){
+                            const result = confirm('동아리를 승인하시겠습니까?');
+                            if(result) {
+
+                            }
+                        }
+                    </script>
+                </div>
+            </div>
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2">
+            <h1 class="h2">동아리 목록관리💻</h1>
+        </div>
+</body>
+</html>

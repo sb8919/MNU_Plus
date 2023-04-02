@@ -49,16 +49,32 @@ def festival():
     else:
         stage_list.append('축제 당일에 공개 됩니다.')
         
-    current_time = datetime.datetime.now().time()
-    if datetime.time(11, 0) <= current_time <= datetime.time(23, 59):
-        booth_hour = '''<a style="color:rgb(255, 59, 59)">운영중</a>'''
+    booth_hour = ""
+    pub_hour=""    
+    ect=""
+    if datetime.datetime.now().date() == datetime.date(2023, 4, 5):   
+        current_time = datetime.datetime.now().time()
+        if datetime.time(11, 0) <= current_time <= datetime.time(23, 59):
+            booth_hour = '''<a style="color:rgb(255, 59, 59)">운영중</a>'''
+        else:
+            booth_hour = '''<a style="color:rgb(49, 127, 245)">오픈전</a>'''
+        if datetime.time(17, 0) <= current_time <= datetime.time(23, 59):
+            pub_hour = '''<a style="color:rgb(255, 59, 59)">운영중</a>'''
+        else:
+            pub_hour = '''<a style="color:rgb(49, 127, 245)">오픈전</a>'''
+    elif datetime.datetime.now().date() == datetime.date(2023, 4, 6):
+        current_time = datetime.datetime.now().time()
+        if datetime.time(11, 0) <= current_time <= datetime.time(23, 59):
+            booth_hour = '''<a style="color:rgb(255, 59, 59)">운영중</a>'''
+        else:
+            booth_hour = '''<a style="color:rgb(49, 127, 245)">오픈전</a>'''
+        if datetime.time(17, 0) <= current_time <= datetime.time(23, 59):
+            pub_hour = '''<a style="color:rgb(255, 59, 59)">운영중</a>'''
+        else:
+            pub_hour = '''<a style="color:rgb(49, 127, 245)">오픈전</a>'''
     else:
-        booth_hour = '''<a style="color:rgb(49, 127, 245)">오픈전</a>'''
-    if datetime.time(17, 0) <= current_time <= datetime.time(23, 59):
-        pub_hour = '''<a style="color:rgb(255, 59, 59)">운영중</a>'''
-    else:
-        pub_hour = '''<a style="color:rgb(49, 127, 245)">오픈전</a>'''
-    
+        ect = '''<a style="color:rgb(255, 156, 173)">오픈 예정</a>'''
+        
     month = datetime.datetime.now().month
     day = datetime.datetime.now().day
     
@@ -66,26 +82,49 @@ def festival():
     foodtruck_count = festivaldb.fetch_one(sql)
     sql = "SELECT COUNT(DISTINCT market_name) FROM Market_List;"
     market_count = festivaldb.fetch_one(sql)
-    sql = "SELECT COUNT(DISTINCT booth_name) FROM Booth_List;"
+    sql = "SELECT COUNT(DISTINCT booth_name) FROM ALL_Booth_DAY1;"
     booth_count = festivaldb.fetch_one(sql)
     count_list = [booth_count,market_count,foodtruck_count]
     
     open_count = []
     if datetime.datetime.now().date() == datetime.date(2023, 4, 5):
-        sql='''SELECT COUNT(*) 
-            ALL_Booth_DAY1
-            WHERE TIME_FORMAT(DATE_ADD(NOW(), INTERVAL 9 HOUR), '%H:%i') >= 13 AND DATE_FORMAT(STR_TO_DATE(close_time, '%H:%i:%s'), '%H:%i') > TIME_FORMAT(DATE_ADD(NOW(), INTERVAL 9 HOUR), '%H:%i')
-
-        '''
-        open_count = festivaldb.fetch_one(sql)
+        if datetime.datetime.now().time() >= datetime.time(17, 0):
+            sql = '''SELECT *
+                     FROM ALL_Booth_DAY1
+                     WHERE TIME_FORMAT(DATE_ADD('2023-04-05 09:02:00', INTERVAL 9 HOUR), '%H:%i') >=
+                     DATE_FORMAT(STR_TO_DATE(open_time, '%H:%i:%s'), '%H:%i')
+                     AND TIME_FORMAT(DATE_ADD(NOW(), INTERVAL 9 HOUR), '%H:%i') <=
+                     DATE_FORMAT(STR_TO_DATE(close_time, '%H:%i:%s'), '%H:%i');'''
+            open_count = festivaldb.fetch_one(sql)
+        else:
+            sql = '''SELECT *
+                     FROM ALL_Booth_DAY1
+                     WHERE TIME_FORMAT(DATE_ADD('2023-04-05 08:02:00', INTERVAL 9 HOUR), '%H:%i') >=
+                     DATE_FORMAT(STR_TO_DATE(open_time, '%H:%i:%s'), '%H:%i')
+                     AND TIME_FORMAT(DATE_ADD(NOW(), INTERVAL 9 HOUR), '%H:%i') <=
+                     DATE_FORMAT(STR_TO_DATE(close_time, '%H:%i:%s'), '%H:%i');
+            '''
+            open_count = festivaldb.fetch_one(sql)
+            
     elif datetime.datetime.now().date() == datetime.date(2023, 4, 6):
-        sql='''SELECT COUNT(*) 
-            ALL_Booth_DAY1
-            WHERE TIME_FORMAT(DATE_ADD(NOW(), INTERVAL 9 HOUR), '%H:%i') >= 10 AND DATE_FORMAT(STR_TO_DATE(close_time, '%H:%i:%s'), '%H:%i') > TIME_FORMAT(DATE_ADD(NOW(), INTERVAL 9 HOUR), '%H:%i')
-
-        '''
-        open_count = festivaldb.fetch_one(sql)  
+        if datetime.datetime.now().time() >= datetime.time(17, 0):
+            sql = '''SELECT *
+                     FROM ALL_Booth_DAY1
+                     WHERE TIME_FORMAT(DATE_ADD('2023-04-06 09:02:00', INTERVAL 9 HOUR), '%H:%i') >=
+                     DATE_FORMAT(STR_TO_DATE(open_time, '%H:%i:%s'), '%H:%i')
+                     AND TIME_FORMAT(DATE_ADD(NOW(), INTERVAL 9 HOUR), '%H:%i') <=
+                     DATE_FORMAT(STR_TO_DATE(close_time, '%H:%i:%s'), '%H:%i');'''
+            open_count = festivaldb.fetch_one(sql)
+        else:
+            sql = '''SELECT *
+                     FROM ALL_Booth_DAY1
+                     WHERE TIME_FORMAT(DATE_ADD('2023-04-06 08:02:00', INTERVAL 9 HOUR), '%H:%i') >=
+                     DATE_FORMAT(STR_TO_DATE(open_time, '%H:%i:%s'), '%H:%i')
+                     AND TIME_FORMAT(DATE_ADD(NOW(), INTERVAL 9 HOUR), '%H:%i') <=
+                     DATE_FORMAT(STR_TO_DATE(close_time, '%H:%i:%s'), '%H:%i');
+            '''
+            open_count = festivaldb.fetch_one(sql)
     else:
         open_count.append('축제 당일 운영중인 부스의 수가 표시됩니다.')   
            
-    return render_template('special/festival/festival.html',booth_hour=booth_hour,pub_hour=pub_hour,stage_list=stage_list, count_list = count_list, open_count=open_count, month=month, day=day)
+    return render_template('special/festival/festival.html',booth_hour=booth_hour,pub_hour=pub_hour,stage_list=stage_list, count_list = count_list, open_count=open_count, month=month, day=day, ect=ect)

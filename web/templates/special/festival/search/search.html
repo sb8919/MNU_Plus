@@ -44,11 +44,11 @@
                 <h5 class="card-title">{{ booth_name }}</h5>
                 {% if "," in booth_time %}
                   {% set booth_time_list = booth_time.split(",") %}
-                  <h6 class="card-subtitle mb-2 text-muted" style="font-size:10px;">
+                  <h6 class="card-subtitle mtb-2 text-muted" style="font-size:10px; margin-top:2px;">
                     {{ booth_time_list[0] }}<br>{{ booth_time_list[1] }}
                   </h6>
                 {% else %}
-                  <h6 class="card-subtitle mb-2 text-muted">
+                  <h6 class="card-subtitle mtb-2 text-muted">
                     {{ booth_time }}
                   </h6>
                 {% endif %} 

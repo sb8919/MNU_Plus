@@ -20,7 +20,18 @@
         $("#nav").load("{{ url_for('static', filename='navbar/festival_navbar/navbar.html')}}");
       });
     </script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-QSGRMQP8SF"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-QSGRMQP8SF');
+    </script>
+    
     <link rel="stylesheet" href="{{ url_for('static', filename='css/special/festival/festival.css')}}">
+    <link rel="favicon" href="{{ url_for('static', filename='icon/favicon.ico')}}">
   </head>
 
   <body>
@@ -65,7 +76,7 @@
                   </div>
                 </div>
                 <div class="booth_list">
-                {% if '축제 당일에 공개 됩니다.' in stage_list %}
+                {% if '축제 당일에 공개 됩니다.' == stage_list %}
                   <h4>{{stage_list[0]|safe}}</h4>
                 {% elif stage_list|length == 1 %}
                   <h4>{{stage_list[0][0]|safe}} {{stage_list[0][1]|safe}}~{{stage_list[0][2]|safe}}</h4>
@@ -118,10 +129,10 @@
             <div class="card">
               <h3>🎪 부스 List</h3>
               <h5>총 {{count_list[0]}}개의 부스를 확인하세요!</h5>
-              {% if '축제 당일 운영중인 부스의 수가 표시됩니다.' in open_count %}
+              {% if '축제 당일 운영중인 부스의 수가 표시됩니다.' == open_count %}
               <h5> <span style="color: rgb(255, 156, 173);"> 축제 당일 운영중인 부스의 수가 표시됩니다.</span> </h5>
               {% else %}
-              <h5>현재 <span style="color: rgb(255, 156, 173);">{{food_count}}</span>개 부스 운영중! </h5>
+              <h5>현재 <span style="color: rgb(255, 156, 173);">{{open_count}}</span>개 부스 운영중! </h5>
               {% endif %}
               <p>자세히 보기 ></p>
               <div class="map" id="map1"></div>
@@ -150,22 +161,40 @@
     <section id="event">
       <div class="innerWrap">
         <h1>Event</h1>
-        <!-- <a href="https://www.instagram.com/mnu40_bareum/"><img src="{{ url_for('static', filename='special/festival/event.PNG') }}"/></a>
-        <p style="font-size:8px;">사진 클릭시 총학생회 이벤트 안내 인스타그램 페이지로 넘어갑니다.</p> -->
         <div class="card mb-4">
-          <a href="https://www.instagram.com/mnu40_bareum/">
-            <img src="{{ url_for('static', filename='special/festival/event.PNG') }}" class="card-img-top" alt="이벤트 이미지">
-          </a>
+          <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <img src="{{ url_for('static', filename='special/festival/EVENT1.jpg') }}" class="d-block w-100" alt="이벤트 이미지" style="height: 300px; width: 300px;">
+              </div>
+              <div class="carousel-item">
+                <img src="{{ url_for('static', filename='special/festival/EVENT2.jpg') }}" class="d-block w-100" alt="이벤트 이미지" style="height: 300px; width: 300px;">
+              </div>
+              <div class="carousel-item">
+                <img src="{{ url_for('static', filename='special/festival/EVENT3.jpg') }}" class="d-block w-100" alt="이벤트 이미지" style="height: 300px; width: 300px;">
+              </div>
+              <!--<div class="carousel-item">
+                <img src="{{ url_for('static', filename='special/festival/EVENT4.PNG') }}" class="d-block w-100" alt="이벤트 이미지" style="height: 300px; width: 300px;">
+              </div>-->
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </a>
+          </div>
           <div class="card-body">
-            <h5 class="card-title">바름 총학이벤트</h5>
-            <p class="card-text">오후 두 시 피크닉을 즐기고 계시는 학우분께 바름총학생회가 치킨들고 찾아갑니다!</p>
+            <h5 class="card-title">바름총학생회 이벤트</h5>
+            <p class="card-text">현재 바름총학생회에서 진행하고 있는 이벤트를 확인해보세요!</p>
             <a href="https://www.instagram.com/mnu40_bareum/" class="btn btn-outline-primary">자세히 보기</a>
           </div>
         </div>
       </div>
-      
-    </div>
     </section>
+    
 
 
     <section id="warning">
@@ -182,6 +211,10 @@
           <div class="card">
             <h3><a>분실물</a>에 대한 안내사항</h3>
             <h5><a style="color:#3247ff; background-color: #FFFFFF;">분실물 습득시</a><br>- 바름총학생회 본부로 전달해주세요.<br><a style="color:#3247ff; background-color: #FFFFFF;">분실물 발생시</a><br>- 바름총학생회 본부로 와주세요.</h5>
+          </div>
+          <div class="card">
+            <h3><a>축제 페이지</a>에 대한 안내사항</h3>
+            <h5>페이지의 기능이 정상 작동하지 않을 경우 에브리타임 <a>댓글혹은 쪽지</a>를 달아주세요!</h5>
           </div>
         </div>
       </div>

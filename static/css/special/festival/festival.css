@@ -142,6 +142,7 @@ section.active .innerWrap img {
 }
 
 #schedule {
+  min-height: 1000px;
   font-family: "TheJamsil5Bold";
   margin: 0;
   display: flex;
@@ -344,6 +345,10 @@ section.active .innerWrap img {
 }
 
 #booth {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 800px;
   padding: 20px;
   height: 100vh;
   font-family: "TheJamsil5Bold";
@@ -432,6 +437,7 @@ section.active .innerWrap img {
 }
 
 #event {
+  min-height: 800px;
   font-family: "TheJamsil5Bold";
   margin: 0;
   display: flex;
@@ -472,6 +478,7 @@ section.active .innerWrap img {
   }
 }
 #warning {
+  min-height: 900px;
   font-family: "TheJamsil5Bold";
   margin: 0;
   display: flex;
@@ -518,6 +525,7 @@ section.active .innerWrap img {
 }
 
 #project_intro {
+  min-height: 800px;
   font-family: "TheJamsil5Bold";
   margin: 0;
   display: flex;

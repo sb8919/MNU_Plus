@@ -12,9 +12,9 @@ window.onload = function () {
     const searchFormElem = boothElem.querySelector(".search-form");
 
     // Samsung 브라우저에서 접속한 경우에만 HTML 코드 변경
-    if (navigator.userAgent.match(/SamsungBrowser/i)) {
-      searchFormElem.innerHTML = "<button  onclick='window.location.href = '/search''>부스 검색하기</button>";
-    }
+    // if (navigator.userAgent.match(/SamsungBrowser/i)) {
+    //   searchFormElem.innerHTML = "<button  onclick='window.location.href = '/search''>부스 검색하기</button>";
+    // }
 
     for (var i = 0; i < pointBtn.length; i++) {
       (function (idx) {
@@ -22,7 +22,7 @@ window.onload = function () {
           pageNum = idx;
           pageChangeFunc();
           window.scrollTo({
-            top: section[pageNum].offsetTop,
+            top: section[pageNum].offsetTop + section[pageNum].offsetHeight / 2 - window.innerHeight / 2,
             behavior: "smooth",
           });
         };

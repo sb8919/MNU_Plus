@@ -168,6 +168,7 @@ section {
 
 //시간표 css
 #schedule {
+  min-height: 1000px;
   font-family: 'TheJamsil5Bold';
   margin: 0;
   display: flex;
@@ -416,6 +417,10 @@ section {
 
 //부스 css
 #booth {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 800px;
   padding: 20px;
   height: 100vh;
   font-family: 'TheJamsil5Bold';
@@ -518,6 +523,7 @@ section {
 }
 
 #event {
+  min-height: 800px;
   font-family: 'TheJamsil5Bold';
   margin: 0;
   display: flex;
@@ -567,6 +573,7 @@ section {
 }
 
 #warning {
+  min-height: 900px;
   font-family: 'TheJamsil5Bold';
   margin: 0;
   display: flex;
@@ -623,6 +630,7 @@ section {
 
 
 #project_intro {
+  min-height: 800px;
   font-family: 'TheJamsil5Bold';
   margin: 0;
   display: flex;
